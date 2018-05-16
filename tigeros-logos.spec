@@ -1,13 +1,13 @@
 Name:       tigeros-logos
-Version:    1.0.0
+Version:    1.0
 Release:    4%{?dist}
-Summary:    Icons and pictures
+Summary:    TigerOS icons and images
 
-Group:      System Environment/Base
-URL:        https://github.com/RITlug/TigerOS
-Source0:    %{name}.tar.gz
+URL:        https://github.com/RITlug/tigeros-logos
+Source0:    %{name}-%{version}-%{release}.tar.gz
+
 #The KDE Logo is under a LGPL license (no version statement)
-License:    GPLv2 and LGPLv2+
+License:    GPLv2, LGPLv2+
 BuildRoot:  %{_tmppath}/%{name}-%{version}-%{release}-root-%(%{__id_u} -n)
 BuildArch:  noarch
 
@@ -30,54 +30,53 @@ Requires(post): coreutils
 %description
 The TigerOS-logos package contains various image files which can be
 used by the bootloader, anaconda, and other related tools.
-It replaces generic-logos for the TigerOS Fedora Remix
+It replaces generic-logos for the TigerOS Fedora Remix.
 
 %prep
 %setup -q
+
 %build
 make
 
 %install
-rm -rf %{buildroot}
-
-mkdir -p %{buildroot}%{_datadir}/firstboot/themes/generic
+%{__mkdir_p} %{buildroot}%{_datadir}/firstboot/themes/generic
 for i in firstboot/* ; do
-  install -p -m 644 $i %{buildroot}%{_datadir}/firstboot/themes/generic
+    install -p -m 644 $i %{buildroot}%{_datadir}/firstboot/themes/generic
 done
 
-mkdir -p %{buildroot}%{_datadir}/pixmaps/bootloader
+%{__mkdir_p} %{buildroot}%{_datadir}/pixmaps/bootloader
 install -p -m 644 bootloader/fedora.icns %{buildroot}%{_datadir}/pixmaps/bootloader
 install -p -m 644 bootloader/fedora.vol %{buildroot}%{_datadir}/pixmaps/bootloader
 install -p -m 644 bootloader/fedora-media.vol  %{buildroot}%{_datadir}/pixmaps/bootloader
 
-mkdir -p %{buildroot}%{_datadir}/pixmaps/splash
+%{__mkdir_p} %{buildroot}%{_datadir}/pixmaps/splash
 for i in gnome-splash/* ; do
-  install -p -m 644 $i %{buildroot}%{_datadir}/pixmaps/splash
+    install -p -m 644 $i %{buildroot}%{_datadir}/pixmaps/splash
 done
 
-mkdir -p %{buildroot}%{_datadir}/pixmaps
+%{__mkdir_p} %{buildroot}%{_datadir}/pixmaps
 for i in pixmaps/* ; do
-  install -p -m 644 $i %{buildroot}%{_datadir}/pixmaps
+    install -p -m 644 $i %{buildroot}%{_datadir}/pixmaps
 done
 
-mkdir -p %{buildroot}%{_kde4_iconsdir}/oxygen/48x48/apps/
+%{__mkdir_p} %{buildroot}%{_kde4_iconsdir}/oxygen/48x48/apps/
 install -p -m 644 icons/Fedora/48x48/apps/* %{buildroot}%{_kde4_iconsdir}/oxygen/48x48/apps/
-mkdir -p %{buildroot}%{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536
+%{__mkdir_p} %{buildroot}%{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536
 install -p -m 644 ksplash/SolarComet-kde.png %{buildroot}%{_kde4_appsdir}/ksplash/Themes/Leonidas/2048x1536/logo.png
 
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/plymouth/themes/charge/
+%{__mkdir_p} $RPM_BUILD_ROOT%{_datadir}/plymouth/themes/charge/
 for i in plymouth/charge/* ; do
     install -p -m 644 $i $RPM_BUILD_ROOT%{_datadir}/plymouth/themes/charge/
 done
 
 # File or directory names do not count as trademark infringement
-mkdir -p %{buildroot}%{_datadir}/icons/Fedora/48x48/apps/
-mkdir -p %{buildroot}%{_datadir}/icons/Fedora/scalable/apps/
+%{__mkdir_p} %{buildroot}%{_datadir}/icons/Fedora/48x48/apps/
+%{__mkdir_p} %{buildroot}%{_datadir}/icons/Fedora/scalable/apps/
 install -p -m 644 icons/Fedora/48x48/apps/* %{buildroot}%{_datadir}/icons/Fedora/48x48/apps/
 install -p -m 644 icons/Fedora/scalable/apps/* %{buildroot}%{_datadir}/icons/Fedora/scalable/apps/
 
-mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/places/
-mkdir -p %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/
+%{__mkdir_p} %{buildroot}%{_datadir}/icons/hicolor/scalable/places/
+%{__mkdir_p} %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/
 install -p -m 644 pixmaps/fedora-logo-sprite.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/places/start-here.svg
 install -p -m 644 icons/Fedora/scalable/apps/anaconda.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/anaconda.svg
 
@@ -94,31 +93,27 @@ touch --no-create %{_kde4_iconsdir}/oxygen ||:
 
 %postun
 if [ $1 -eq 0 ] ; then
-touch --no-create %{_datadir}/icons/Fedora || :
-touch --no-create %{_kde4_iconsdir}/oxygen ||:
-if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  if [ -f %{_datadir}/icons/Fedora/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/Fedora || :
-  fi
-  if [ -f %{_kde4_iconsdir}/Fedora-KDE/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_kde4_iconsdir}/Fedora-KDE/index.theme || :
-  fi
-fi
+    touch --no-create %{_datadir}/icons/Fedora || :
+    touch --no-create %{_kde4_iconsdir}/oxygen ||:
+    if [ -x /usr/bin/gtk-update-icon-cache ]; then
+        if [ -f %{_datadir}/icons/Fedora/index.theme ]; then
+            gtk-update-icon-cache --quiet %{_datadir}/icons/Fedora || :
+        fi
+        if [ -f %{_kde4_iconsdir}/Fedora-KDE/index.theme ]; then
+            gtk-update-icon-cache --quiet %{_kde4_iconsdir}/Fedora-KDE/index.theme || :
+        fi
+    fi
 fi
 
 %posttrans
 if [ -x /usr/bin/gtk-update-icon-cache ]; then
-  if [ -f %{_datadir}/icons/Fedora/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_datadir}/icons/Fedora || :
-  fi
-  if [ -f %{_kde4_iconsdir}/oxygen/index.theme ]; then
-    gtk-update-icon-cache --quiet %{_kde4_iconsdir}/oxygen/index.theme || :
-  fi
+    if [ -f %{_datadir}/icons/Fedora/index.theme ]; then
+        gtk-update-icon-cache --quiet %{_datadir}/icons/Fedora || :
+    fi
+    if [ -f %{_kde4_iconsdir}/oxygen/index.theme ]; then
+        gtk-update-icon-cache --quiet %{_kde4_iconsdir}/oxygen/index.theme || :
+    fi
 fi
-
-
-%clean
-rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root,-)
@@ -136,12 +131,15 @@ rm -rf %{buildroot}
 %{_datadir}/icons/hicolor/*/places/*
 
 %changelog
-* Wed Aug 30 2017 Aidan Kahrs <axk4545@rit.edu> - 1.0.0-4
-- rebuild for Fedora 26
+* Tue May 15 2018 Tim Zabel <tjz8659@rit.edu> - 1.0-4
+- Fedora 28 build
+- Spec file overhaul
 
 * Sun May 14 2017 Aidan Kahrs <axk4545@rit.edu> - 1.0.0-3
 - add hicolor icons for anaconda
+
 * Sat May 13 2017 Aidan Kahrs <axk4545@rit.edu> - 1.0.0-2
 - Fix obsoletes and provides
+
 * Fri Apr 21 2017 Aidan Kahrs <axk4545@rit.edu> - 1.0.0-1
 - Initial version
