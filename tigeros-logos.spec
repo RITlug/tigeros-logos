@@ -80,8 +80,6 @@ install -p -m 644 icons/Fedora/scalable/apps/* %{buildroot}%{_datadir}/icons/Fed
 install -p -m 644 pixmaps/fedora-logo-sprite.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/places/start-here.svg
 install -p -m 644 icons/Fedora/scalable/apps/anaconda.svg %{buildroot}%{_datadir}/icons/hicolor/scalable/apps/anaconda.svg
 
-
-
 (cd anaconda; make DESTDIR=%{buildroot} install)
 
 # save some dup'd icons
