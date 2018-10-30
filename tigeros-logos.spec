@@ -1,6 +1,6 @@
 Name:       tigeros-logos
 Version:    1.0
-Release:    4%{?dist}
+Release:    5%{?dist}
 Summary:    TigerOS icons and images
 
 URL:        https://github.com/RITlug/tigeros-logos
@@ -129,6 +129,9 @@ fi
 %{_datadir}/icons/hicolor/*/places/*
 
 %changelog
+* Wed Oct 17 2018 Tim Zabel <tjz8659@rit.edu> - 1.0-5
+- Fedora 29 Build
+
 * Tue May 15 2018 Tim Zabel <tjz8659@rit.edu> - 1.0-4
 - Fedora 28 build
 - Spec file overhaul
